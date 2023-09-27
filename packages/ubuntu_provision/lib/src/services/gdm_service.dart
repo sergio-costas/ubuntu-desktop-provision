@@ -8,21 +8,16 @@ final log = Logger('dart_gdm_service');
 
 class GdmService {
 
-  DBusClient? _connection;
-
   Future<DBusClient> getClientConnection() async {
-    if (_connection == null) {
-      var gdmObject = DBusRemoteObject(DBusClient.system(),
-                                       name: 'org.gnome.DisplayManager',
-                                       path: DBusObjectPath('/org/gnome/DisplayManager/Manager'));
-      var response = await gdmObject.callMethod('org.gnome.DisplayManager.Manager',
-                                                'OpenSession',
-                                                [],
-                                                replySignature: DBusSignature('s'));
-      var address = response.values[0].asString();
-      _connection = DBusClient(DBusAddress(address), messageBus: false);
-    }
-    return _connection!;
+    var gdmObject = DBusRemoteObject(DBusClient.system(),
+                                      name: 'org.gnome.DisplayManager',
+                                      path: DBusObjectPath('/org/gnome/DisplayManager/Manager'));
+    var response = await gdmObject.callMethod('org.gnome.DisplayManager.Manager',
+                                              'OpenSession',
+                                              [],
+                                              replySignature: DBusSignature('s'));
+    var address = response.values[0].asString();
+    return DBusClient(DBusAddress(address), messageBus: false);
   }
 
   Future<DBusRemoteObject> getGreeter() async {
