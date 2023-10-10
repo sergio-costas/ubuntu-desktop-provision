@@ -51,6 +51,9 @@ Future<void> runInstallerApp(
         defaultsTo: 'examples/sources/desktop.yaml',
         help: 'Path of the source catalog (dry-run only)');
     parser.addFlag('welcome', aliases: ['try-or-install'], hide: true);
+    parser.addOption('pages',
+        valueHelp: 'path', help: 'A comma-separated list of pages', hide: true);
+    parser.addOption('core-install', defaultsTo: '0');
   })!;
   final liveRun = options['dry-run'] != true;
   final exe = p.basename(Platform.resolvedExecutable);
