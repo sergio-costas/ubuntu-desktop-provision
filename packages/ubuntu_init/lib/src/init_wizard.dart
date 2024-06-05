@@ -127,7 +127,11 @@ class InitWizard extends ConsumerWidget {
                 if (shownPage) {
                   final window = YaruWindow.of(context);
                   GdmService gdmService = getService<GdmService>();
-                  await gdmService.openNewSession();
+                  try {
+                    await gdmService.openNewSession();
+                  } catch (err) {
+                    // Can be ignored, just means we're not using GDM
+                  }
                   await _onDone?.call();
                   await window.close();
                   return InitRoutes.initial;
